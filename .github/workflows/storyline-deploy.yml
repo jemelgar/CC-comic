@@ -17,7 +17,6 @@ jobs:
 
       - name: Move Storyline export to root
         run: |
-          rm -rf index.html story_content story.js
           cp -r docs/* .
           mv story.html index.html
           git config --global user.name "GitHub Actions"
