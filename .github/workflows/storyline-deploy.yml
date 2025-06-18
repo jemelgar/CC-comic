@@ -1,26 +1,40 @@
-# .github/workflows/storyline-deploy.yml
+# .github/workflows/deploy-from-temp-to-main.yml
 
-name: Move Storyline to Root
+name: Deploy Storyline from temp to main
 
 on:
   push:
     branches:
-      - main
+      - temp
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout temp branch
         uses: actions/checkout@v4
 
-      - name: Move Storyline export to root
+      - name: Prepare Storyline export
         run: |
-          cp -r docs/* .
+          mkdir deploy
+          cp -r docs/* deploy/
+          cd deploy
           mv story.html index.html
+
+      - name: Push to main branch
+        run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add index.html story_content story.js
-          git commit -m "Deploy new Storyline version to root [skip ci]" || echo "No changes to commit"
+
+          git checkout main
+          git pull origin main
+
+          # Opcional: limpiar viejos
+          rm -rf index.html story_content html5 mobile analytics-frame.html meta.xml
+
+          cp -r deploy/* .
+
+          git add index.html story_content html5 mobile analytics-frame.html meta.xml
+          git commit -m "Deploy Storyline from temp to main [skip ci]" || echo "No changes to commit"
           git push origin main
