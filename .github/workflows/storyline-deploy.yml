@@ -1,5 +1,3 @@
-# .github/workflows/deploy-from-temp-to-main.yml
-
 name: Deploy Storyline from temp to main
 
 on:
@@ -12,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout temp branch
+      - name: Checkout temp branch and fetch all branches
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Prepare Storyline export
         run: |
@@ -30,7 +30,7 @@ jobs:
           git checkout main
           git pull origin main
 
-          # Opcional: limpiar viejos
+          # Optional: clean old files
           rm -rf index.html story_content html5 mobile analytics-frame.html meta.xml
 
           cp -r deploy/* .
