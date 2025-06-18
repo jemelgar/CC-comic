@@ -41,5 +41,5 @@ jobs:
           cp -r deploy/* .
 
           git add index.html story_content html5 mobile analytics-frame.html meta.xml
-          git commit -m "Deploy Storyline from temp to main [skip ci]" || echo "No changes to commit"
+          git commit -m "Deploy Storyline from temp to main [skip ci]" || echo "No changes to commit yet"
           git push origin main
